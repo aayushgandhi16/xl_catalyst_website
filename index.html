@@ -305,6 +305,55 @@
     .logo-row { gap: 2rem; }
     .logo-divider { display: none; }
   }
+
+  /* FACILITATORS */
+  .facilitators { background: var(--white); border-top: 3px solid var(--accent); }
+  .facilitators-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-top: 3rem; }
+  .facilitator-card {
+    display: flex; flex-direction: column;
+    border: 1px solid var(--rule);
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+    text-decoration: none; color: inherit;
+  }
+  .facilitator-card:hover { box-shadow: 0 8px 32px rgba(26,61,124,0.10); }
+  .facilitator-photo {
+    width: 100%; aspect-ratio: 4/3;
+    background: var(--bg-blue);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    border-bottom: 1px solid var(--rule);
+  }
+  .facilitator-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .facilitator-photo .photo-placeholder {
+    font-size: 0.72rem; color: var(--ink-muted); letter-spacing: 0.08em;
+    text-align: center; padding: 2rem;
+    border: 1.5px dashed var(--rule); margin: 1.5rem;
+    width: calc(100% - 3rem);
+  }
+  .facilitator-info { padding: 1.75rem 2rem 2rem; flex: 1; position: relative; }
+  .facilitator-info h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.65rem; font-weight: 700; margin-bottom: 0.2rem;
+  }
+  .facilitator-role {
+    font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent-light); font-weight: 500; margin-bottom: 1rem;
+  }
+  .facilitator-bio {
+    font-size: 0.97rem; color: var(--ink-light); font-weight: 300; line-height: 1.75;
+  }
+  .linkedin-badge {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    margin-top: 1.25rem;
+    font-size: 0.75rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--accent-light);
+  }
+  .linkedin-badge svg { width: 14px; height: 14px; fill: var(--accent-light); }
+
+  @media (max-width: 760px) {
+    .facilitators-grid { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
@@ -389,6 +438,54 @@
           <li><span class="arr">›</span>Direct 1:1 feedback from experienced facilitators during the session.</li>
         </ul>
       </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- FACILITATORS -->
+<section class="facilitators">
+  <div class="section-inner">
+    <span class="section-tag reveal">Your Facilitators</span>
+    <h2 class="section-heading reveal">Practitioners who have been there.</h2>
+    <div class="facilitators-grid reveal">
+
+      <a class="facilitator-card" href="https://www.linkedin.com/in/ovlkk/" target="_blank">
+        <div class="facilitator-photo">
+          <!-- Replace .photo-placeholder with: <img src="kiran-photo.jpg" alt="OVL Kiran Kumar"> -->
+           <img src="kiran-photo.png" alt="Kiran Kumar">
+        </div>
+        <div class="facilitator-info">
+          <h3>Kiran Kumar</h3>
+          <div class="facilitator-role">Executive Advisor · Product, Business &amp; People Strategy</div>
+          <p class="facilitator-bio">
+            A seasoned strategist with deep expertise navigating the 0 to $10M startup journey. XLRI Jamshedpur alumnus with experience across SaaS, Deep Tech, and global early-stage and growth-stage ventures. Has contributed to building and scaling organisations including Keka and Darwinbox.
+          </p>
+          <span class="linkedin-badge">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            View on LinkedIn
+          </span>
+        </div>
+      </a>
+
+      <a class="facilitator-card" href="https://www.linkedin.com/in/namratharoy/" target="_blank">
+        <div class="facilitator-photo">
+          <!-- Replace .photo-placeholder with: <img src="namratha-photo.jpg" alt="Namratha Roy"> -->
+          <img src="namratha-photo.png" alt="Namratha Roy">
+        </div>
+        <div class="facilitator-info">
+          <h3>Namratha Roy</h3>
+          <div class="facilitator-role">Global HR Leader · People Strategy &amp; Organisational Design</div>
+          <p class="facilitator-bio">
+            A proven global leader with broad experience in Human Resources strategy and execution across Asia and beyond. XLRI Jamshedpur alumna with hands-on experience scaling organisations including Darwinbox and Zenoti. Known for her work in AI-powered HR, talent strategy, and leadership development.
+          </p>
+          <span class="linkedin-badge">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            View on LinkedIn
+          </span>
+        </div>
+      </a>
+
     </div>
   </div>
 </section>
