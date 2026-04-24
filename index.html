@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XL Catalyst · Organisation Design Workshop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d1117;
+    --ink-light: #3d4a5c;
+    --ink-muted: #7a8899;
+    --bg: #f7f9fc;
+    --bg-blue: #eef2f9;
+    --accent: #1a3d7c;
+    --accent-mid: #2358b5;
+    --accent-light: #3b76e1;
+    --rule: #d8e2f0;
+    --white: #ffffff;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: linear-gradient(160deg, #eef4ff 0%, #f7f9fc 40%, #f0f5ff 100%);
+    background-attachment: fixed;
+    color: var(--ink);
+    font-size: 18px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.1rem 5vw;
+    background: rgba(247,249,252,0.94);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.55rem; font-weight: 700; letter-spacing: 0.02em;
+    color: var(--ink); text-decoration: none;
+  }
+  .nav-logo span { color: var(--accent-light); }
+  .nav-cta {
+    display: inline-block; padding: 0.6rem 1.6rem;
+    background: var(--accent); color: var(--white);
+    font-size: 0.82rem; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase;
+    text-decoration: none; transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--accent-mid); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 9rem 5vw 5rem;
+    position: relative; overflow: hidden;
+    background: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(59,118,225,0.07) 0%, transparent 70%);
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 42vw; height: 100%;
+    background: var(--bg-blue);
+    clip-path: polygon(12% 0, 100% 0, 100% 100%, 0% 100%);
+    z-index: 0;
+  }
+  .hero-eyebrow {
+    font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent-light); margin-bottom: 1.4rem;
+    position: relative; z-index: 1;
+    opacity: 0; animation: fadeUp 0.7s ease 0.1s forwards;
+  }
+  .hero-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 5.5vw, 5.2rem);
+    font-weight: 700; line-height: 1.08; max-width: 740px;
+    position: relative; z-index: 1;
+    opacity: 0; animation: fadeUp 0.7s ease 0.25s forwards;
+  }
+  .hero-headline em { font-style: italic; color: var(--accent-light); }
+  .hero-sub {
+    margin-top: 1.6rem;
+    font-size: 1.15rem; font-weight: 300; color: var(--ink-light);
+    max-width: 520px; line-height: 1.8;
+    position: relative; z-index: 1;
+    opacity: 0; animation: fadeUp 0.7s ease 0.4s forwards;
+  }
+  .hero-actions {
+    margin-top: 2.4rem;
+    display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;
+    position: relative; z-index: 1;
+    opacity: 0; animation: fadeUp 0.7s ease 0.55s forwards;
+  }
+  .btn-primary {
+    display: inline-block; padding: 1rem 2.4rem;
+    background: var(--accent); color: var(--white);
+    font-size: 0.88rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+    text-decoration: none; transition: background 0.2s, transform 0.2s;
+  }
+  .btn-primary:hover { background: var(--accent-mid); transform: translateY(-1px); }
+  .hero-note { font-size: 0.82rem; color: var(--ink-muted); letter-spacing: 0.04em; }
+
+  /* EVENT STRIP */
+  .event-strip {
+    position: relative; z-index: 1;
+    margin-top: 3.5rem;
+    display: inline-flex; flex-wrap: wrap;
+    border: 1px solid var(--rule);
+    background: var(--white);
+    opacity: 0; animation: fadeUp 0.7s ease 0.65s forwards;
+  }
+  .ev-item {
+    padding: 1.2rem 2rem;
+    border-right: 1px solid var(--rule);
+  }
+  .ev-item:last-child { border-right: none; }
+  .ev-item .el {
+    font-size: 0.67rem; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-muted); margin-bottom: 0.25rem;
+  }
+  .ev-item .ev {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem; font-weight: 600; color: var(--ink);
+  }
+
+  /* SHARED */
+  section { padding: 5rem 5vw; }
+  .section-inner { max-width: 1080px; margin: 0 auto; }
+  .section-tag {
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent-light); font-weight: 500;
+    margin-bottom: 0.85rem; display: block;
+  }
+  .section-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.1rem, 3.5vw, 3rem);
+    font-weight: 700; line-height: 1.12; margin-bottom: 1rem;
+  }
+
+  /* LOGOS STRIP */
+  .logos-section {
+    background: var(--white); padding: 3rem 5vw;
+    border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  }
+  .logos-inner { max-width: 1080px; margin: 0 auto; }
+  .logos-label {
+    font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--ink-muted); font-weight: 500; text-align: center; margin-bottom: 2rem;
+  }
+  .logo-row {
+    display: flex; justify-content: center; align-items: center;
+    gap: 4rem; flex-wrap: wrap;
+  }
+  .logo-block { display: flex; flex-direction: column; align-items: center; gap: 0.45rem; }
+  .logo-box {
+    width: 180px; height: 72px;
+    border: 1.5px dashed var(--rule);
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bg); color: var(--ink-muted);
+    font-size: 0.7rem; font-weight: 500; letter-spacing: 0.05em;
+    overflow: hidden;
+  }
+  .logo-box img { width: 100%; height: 100%; object-fit: fill; display: block; }
+  .logo-name-tag {
+    font-size: 0.68rem; color: var(--ink-muted); letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .logo-divider {
+    width: 1px; height: 56px; background: var(--rule);
+  }
+
+  /* WHO + OUTCOMES */
+  .who-outcomes { background: linear-gradient(135deg, #ffffff 60%, #eef4ff 100%); border-top: 3px solid var(--accent); }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .col-label {
+    font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent-light); font-weight: 500; margin-bottom: 1.25rem; display: block;
+  }
+  .check-list { list-style: none; }
+  .check-list li {
+    display: flex; gap: 0.9rem; align-items: flex-start;
+    font-size: 1.02rem; color: var(--ink-light); font-weight: 300;
+    line-height: 1.65; padding: 0.75rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .check-list li:last-child { border-bottom: none; }
+  .check-list li .arr { color: var(--accent-light); flex-shrink: 0; padding-top: 0.1rem; font-size: 1.1rem; }
+
+  /* PROGRAMME + ELIGIBILITY */
+  .programme { background: linear-gradient(135deg, #e8f0fc 0%, #ddeaff 100%); }
+  .prog-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; margin-top: 2.5rem; }
+  .prog-list { list-style: none; }
+  .prog-list li {
+    padding: 1rem 0; border-bottom: 1px solid var(--rule);
+    display: flex; gap: 1rem; align-items: flex-start;
+    font-size: 1.02rem; color: var(--ink-light); font-weight: 300; line-height: 1.7;
+  }
+  .prog-list li:last-child { border-bottom: none; }
+  .prog-list li::before { content: 'to'; color: var(--accent-light); flex-shrink: 0; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; padding-top: 0.28rem; }
+  .elig-box {
+    background: var(--white); padding: 2.2rem;
+    border-top: 3px solid var(--accent);
+  }
+  .elig-box h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.55rem; font-weight: 700; margin-bottom: 1.25rem;
+  }
+  .elig-item {
+    display: flex; gap: 0.75rem; align-items: flex-start;
+    font-size: 1rem; color: var(--ink-light); font-weight: 300;
+    line-height: 1.6; margin-bottom: 0.8rem;
+  }
+  .elig-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent-light); flex-shrink: 0; margin-top: 0.52rem;
+  }
+
+  /* FAQ */
+  .faq { background: linear-gradient(180deg, #f4f8ff 0%, #f7f9fc 100%); }
+  .faq-list { margin-top: 2.5rem; max-width: 740px; }
+  .faq-item { border-bottom: 1px solid var(--rule); }
+  .faq-q {
+    width: 100%; background: none; border: none; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.4rem 0;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.05rem; font-weight: 500; color: var(--ink); text-align: left; gap: 1rem;
+  }
+  .faq-q .ic {
+    width: 26px; height: 26px; flex-shrink: 0;
+    border: 1px solid var(--rule); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; color: var(--accent-light); transition: transform 0.3s; line-height: 1;
+  }
+  .faq-item.open .faq-q .ic { transform: rotate(45deg); }
+  .faq-a {
+    font-size: 1.02rem; color: var(--ink-light); font-weight: 300; line-height: 1.8;
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s; padding-bottom: 0;
+  }
+  .faq-item.open .faq-a { max-height: 300px; padding-bottom: 1.4rem; }
+
+  /* APPLY */
+  .apply {
+    background: var(--accent); color: var(--white);
+    text-align: center; padding: 6rem 5vw;
+  }
+  .apply .section-tag { color: rgba(255,255,255,0.45); }
+  .apply .section-heading { color: var(--white); max-width: 560px; margin: 0 auto 1rem; }
+  .apply-sub { color: rgba(255,255,255,0.65); font-weight: 300; margin-bottom: 2.5rem; font-size: 1.05rem; }
+  .apply-stats {
+    display: flex; justify-content: center; gap: 3.5rem; flex-wrap: wrap; margin-bottom: 2.5rem;
+  }
+  .as-item .asl { font-size: 0.67rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 0.2rem; }
+  .as-item .asv {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem; font-weight: 600; color: var(--white);
+  }
+  .btn-white {
+    display: inline-block; padding: 1rem 2.8rem;
+    background: var(--white); color: var(--accent);
+    font-size: 0.88rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase;
+    text-decoration: none; transition: background 0.2s, transform 0.2s;
+  }
+  .btn-white:hover { background: var(--bg-blue); transform: translateY(-1px); }
+  .apply-fine { margin-top: 1.2rem; font-size: 0.78rem; color: rgba(255,255,255,0.35); letter-spacing: 0.05em; }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.35);
+    padding: 2rem 5vw;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+    font-size: 0.8rem; letter-spacing: 0.04em;
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem; font-weight: 700; color: var(--white);
+  }
+  .footer-logo span { color: var(--accent-light); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* RESPONSIVE */
+  @media (max-width: 760px) {
+    body { font-size: 17px; }
+    .hero::before { display: none; }
+    .hero { padding: 7rem 5vw 4rem; }
+    .two-col, .prog-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    section { padding: 3.5rem 5vw; }
+    .ev-item { border-right: none; border-bottom: 1px solid var(--rule); }
+    .logo-row { gap: 2rem; }
+    .logo-divider { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#"><span>XL</span> Catalyst</a>
+  <a class="nav-cta" href="https://forms.gle/6hXGdRHuzrizxGVw8" target="_blank">Apply Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">Organisation Design Workshop · May 2026 · T-Hub, Hyderabad</p>
+  <h1 class="hero-headline">
+    Stop <em>running</em> your startup.<br>Start <em>designing</em> it.
+  </h1>
+  <p class="hero-sub">
+    A focused 2-hour working session for founders navigating the complexities of scale. Build the organisation your growth actually needs.
+  </p>
+  <div class="hero-actions">
+    <a class="btn-primary" href="https://forms.gle/6hXGdRHuzrizxGVw8" target="_blank">Apply to Participate</a>
+    <span class="hero-note">Limited to 30 curated founding teams</span>
+  </div>
+  <div class="event-strip">
+    <div class="ev-item"><div class="el">Date</div><div class="ev">16 May 2026, Saturday</div></div>
+    <div class="ev-item"><div class="el">Time</div><div class="ev">3:00 to 5:00 PM</div></div>
+    <div class="ev-item"><div class="el">Venue</div><div class="ev">T-Hub, Hyderabad</div></div>
+    <div class="ev-item"><div class="el">Format</div><div class="ev">Max 2 per startup</div></div>
+  </div>
+</section>
+
+<!-- LOGOS STRIP -->
+<div class="logos-section reveal">
+  <div class="logos-inner">
+    <p class="logos-label">Facilitators with experience scaling</p>
+    <div class="logo-row">
+      <div class="logo-block">
+        <div class="logo-box"><img src="keka-logo.png" alt="Keka"></div>
+        <span class="logo-name-tag">Keka</span>
+      </div>
+      <div class="logo-block">
+        <div class="logo-box"><img src="darwinbox-logo.png" alt="Darwinbox"></div>
+        <span class="logo-name-tag">Darwinbox</span>
+      </div>
+      <div class="logo-block">
+        <div class="logo-box"><img src="zenoti-logo.png" alt="Zenoti"></div>
+        <span class="logo-name-tag">Zenoti</span>
+      </div>
+      <div class="logo-divider"></div>
+      <div class="logo-block">
+        <div class="logo-box"><img src="xlri-logo.png" alt="XLRI"></div>
+        <span class="logo-name-tag">Supported by XLRI Alumni</span>
+      </div>
+      <div class="logo-block">
+        <div class="logo-box"><img src="xlri-hyd-logo.png" alt="XLRI Hyderabad Chapter"></div>
+        <span class="logo-name-tag">XLRI Hyderabad Chapter</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHO + OUTCOMES -->
+<section class="who-outcomes">
+  <div class="section-inner">
+    <div class="two-col">
+      <div class="reveal">
+        <span class="col-label">Who This Is For</span>
+        <ul class="check-list">
+          <li><span class="arr">›</span>Founders deeply involved in day-to-day operations with little strategic bandwidth left.</li>
+          <li><span class="arr">›</span>Actively hiring but without a clear org structure to hire into.</li>
+          <li><span class="arr">›</span>Experiencing a gap between what the team does and what the business needs.</li>
+          <li><span class="arr">›</span>Scaling fast but running into compounding operational inefficiencies.</li>
+        </ul>
+      </div>
+      <div class="reveal">
+        <span class="col-label">What You Will Leave With</span>
+        <ul class="check-list">
+          <li><span class="arr">›</span>Growth objectives translated into defined, ownable workstreams.</li>
+          <li><span class="arr">›</span>Responsibilities mapped clearly across your existing team.</li>
+          <li><span class="arr">›</span>Structural gaps and hiring needs identified with precision.</li>
+          <li><span class="arr">›</span>A practical, scalable org design framework built for your context.</li>
+          <li><span class="arr">›</span>Direct 1:1 feedback from experienced facilitators during the session.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMME + ELIGIBILITY -->
+<section class="programme">
+  <div class="section-inner">
+    <span class="section-tag reveal">Programme and Eligibility</span>
+    <h2 class="section-heading reveal">Structured for depth. Curated for fit.</h2>
+    <div class="prog-grid">
+      <ul class="prog-list reveal">
+        <li>Cohort of 30 founding teams, deliberately small for quality of interaction.</li>
+        <li>Groups structured by stage, funding status, and domain for meaningful peer learning.</li>
+        <li>Facilitated by practitioners with direct scaling experience at Keka, Darwinbox, and Zenoti.</li>
+        <li>Active working session: you build your org framework in the room, not at home.</li>
+        <li>Backed by a network of XLRI alumni, investors, and senior HR leaders.</li>
+      </ul>
+      <div class="elig-box reveal">
+        <h3>Eligibility Criteria</h3>
+        <div class="elig-item"><span class="elig-dot"></span><span>Founders in the $0.5M to $10M growth phase</span></div>
+        <div class="elig-item"><span class="elig-dot"></span><span>Organisations scaling from roughly 20 to 100 employees</span></div>
+        <div class="elig-item"><span class="elig-dot"></span><span>Teams building for efficiency, not just adding headcount</span></div>
+        <div class="elig-item"><span class="elig-dot"></span><span>Maximum 2 representatives per startup</span></div>
+        <div class="elig-item"><span class="elig-dot"></span><span>Subject to selection; participation is curated</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="section-inner">
+    <span class="section-tag reveal">Founder Questions</span>
+    <h2 class="section-heading reveal">Honestly answered.</h2>
+    <div class="faq-list reveal">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Will this be generic, or tailored to my startup?
+          <span class="ic">+</span>
+        </button>
+        <div class="faq-a">
+          This is a group workshop designed to produce startup-specific outcomes. You work on your own business context throughout the session. The facilitation is built around your stage, team size, and growth goals, not a one-size-fits-all template.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How can it be startup-specific in a group setting?
+          <span class="ic">+</span>
+        </button>
+        <div class="faq-a">
+          Facilitators guide each founder through self-discovery, shared planning, and 1:1 feedback within 90 minutes. Org design is not a one-time exercise. Like gardening, it requires ongoing pruning and adaptation. This session gives you the tools and clarity to keep doing that well.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Who exactly is this designed for?
+          <span class="ic">+</span>
+        </button>
+        <div class="faq-a">
+          Founders navigating the $0.5M to $10M journey, or the equivalent headcount journey from 20 to 100 employees. If you are in that window, or approaching it, this session was built for you.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How will groups be formed within the cohort?
+          <span class="ic">+</span>
+        </button>
+        <div class="faq-a">
+          Groups are structured based on funding stage (bootstrapped, funded, or currently raising), current headcount, and industry focus. The goal is to cross-pollinate learning among founders with compatible organisational journeys, not to cluster identical companies together.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- APPLY -->
+<section class="apply" id="apply">
+  <div class="section-inner">
+    <span class="section-tag">Apply to Participate</span>
+    <h2 class="section-heading">Seats are limited and subject to selection.</h2>
+    <p class="apply-sub">Participation is curated. Apply early to secure your place in this cohort.</p>
+    <div class="apply-stats">
+      <div class="as-item"><div class="asl">Indicative Value</div><div class="asv">Rs. 50,000 per startup</div></div>
+      <div class="as-item"><div class="asl">Cohort Size</div><div class="asv">30 founding teams</div></div>
+      <div class="as-item"><div class="asl">Duration</div><div class="asv">2 hours</div></div>
+      <div class="as-item"><div class="asl">Backed by</div><div class="asv">XLRI Alumni Network</div></div>
+    </div>
+    <a class="btn-white" href="https://forms.gle/6hXGdRHuzrizxGVw8" target="_blank">Submit Your Application</a>
+    <p class="apply-fine">Applications reviewed on a rolling basis. Early submissions are strongly encouraged.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo"><span>XL</span> Catalyst</div>
+  <div>Organisation Design Workshop · T-Hub, Hyderabad · 16 May 2026</div>
+  <div>Supported by XLRI Alumni Network</div>
+</footer>
+
+<script>
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
